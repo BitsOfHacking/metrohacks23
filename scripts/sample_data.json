@@ -1,0 +1,20 @@
+{
+    "0": "So, The WebWorker implementation, so, I have here is, um, essentially copied from the MDN docs.",
+    "0021000": "And, um, basically what we can do here is, um, post messages from the main thread to the worker and, um, vice versa.",
+    "0027000": "So, um, this is how we're, so, able to display a counter.",
+    "0033000": "And when we click the start button, well, we'll notice that we're, um, still able to highlight things,",
+    "0038000": "um, click other buttons on the web page. It's, um, responsive.",
+    "0043000": "But the, um, worker thread is, um, experiencing that, um, blocking code instead.",
+    "0046000": "So the, um, counter doesn't begin to, uh, initialize.",
+    "0051000": "So the, um, counter doesn't begin to, uh, start until that, um, blocking code is, um, run.",
+    "0054000": "But, um, that's okay because it's on a, um, worker thread.",
+    "0101000": "It's, um, not affecting our user in a way that, um, makes them think that our, um, website is, um, broken.",
+    "0106000": "Now, um, there are a few, um, caveats with, um, WebWorkers.",
+    "0111000": "Now, um, there are a few, like, caveats with, um, WebWorkers.",
+    "0115000": "Um, one being that, um, workers can't, um, directly manipulate the, um, DOM.",
+    "0124000": "And, um, this is why we have to, um, send and, um, post messages from the, um, main thread to the, um, worker and, um, vice versa.",
+    "0129000": "And with this comes, um, data, um, serialization and, um, deserialization.",
+    "0141000": "So, um, if you're, um, transferring large objects between, um, threads,",
+    "0146000": "all of that, um, data, there is a, um, bit of, um, overhead with that, um, data.",
+    "0207000": "So, um, there is some, so, overhead involved with, um, that."
+}

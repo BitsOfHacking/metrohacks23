@@ -1,0 +1,1 @@
+FILLER_WORDS = [ "Just", "Basically", "Okay", "Right", "Literally", "Like", "Um", "Uh", "Actually", "That", "I mean"  ]
