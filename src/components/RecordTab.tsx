@@ -23,7 +23,6 @@ export default function RecordTab({ showVideo }: RecordTabProps) {
         stopRecording();
         SpeechRecognition.stopListening()
     }
-     console.log("rerender")
     
     return (
         <section className="flex flex-col items-center w-3/4 h-full p-10 border-solid border-2 border-gray-800 rounded gap-4">
