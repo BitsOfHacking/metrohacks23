@@ -1,3 +1,5 @@
+'use client'
+
 import { Navbar, NavbarContent, NavbarItem, Link, NavbarBrand } from "@nextui-org/react"
 import StageSyncLogo from "@/components/StageSyncLogo";
 
@@ -8,7 +10,9 @@ export default function StageLayout({
 }) {
     return (
         <>
-            <Navbar>
+            <Navbar css={{
+                border: "$space solid transparent"
+            }}>
                 <NavbarBrand>
                     <StageSyncLogo/>
                 </NavbarBrand>
