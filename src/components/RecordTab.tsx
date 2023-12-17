@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react";
-import { RefObject, useEffect, useRef } from "react";
+import { Dispatch, RefObject, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import { StatusMessages, useReactMediaRecorder } from "react-media-recorder";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
@@ -14,10 +14,13 @@ export default function RecordTab({ showVideo }: RecordTabProps) {
         });
     const videoRef = useRef<HTMLVideoElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
-    
+    const [startTime, setStartTime] = useState(Date.now())
+
     function startRecordingProcess() {
         startRecording();
-        SpeechRecognition.startListening({continuous: true})
+        SpeechRecognition.startListening({ continuous: true })
+        setStartTime(Date.now())
+        
     }
     function stopRecordingProcess() {
         stopRecording();
@@ -60,7 +63,7 @@ export default function RecordTab({ showVideo }: RecordTabProps) {
                     )
                     
                 }
-                <Dictaphone status={status} clearBlobUrl={clearBlobUrl} videoRef={videoRef} audioRef={audioRef}/>
+                <Dictaphone startTime={startTime} status={status} clearBlobUrl={clearBlobUrl} videoRef={videoRef} audioRef={audioRef}/>
             </div>
         </section>
     )
@@ -70,10 +73,27 @@ interface DictaphoneProps {
     clearBlobUrl: () => void
     videoRef: RefObject<HTMLVideoElement>
     audioRef: RefObject<HTMLAudioElement>
+    startTime: number
 }
-function Dictaphone({status, clearBlobUrl, videoRef, audioRef}: DictaphoneProps) {
-    const { transcript, resetTranscript } = useSpeechRecognition();
-    
+function Dictaphone({status, clearBlobUrl, videoRef, audioRef, startTime}: DictaphoneProps) {
+    const { transcript, resetTranscript, listening } = useSpeechRecognition();
+    const data = useRef({});
+    const [lastIndex, setLastIndex] = useState(0);
+
+    useEffect(() => {
+        if (listening) {
+                setLastIndex(transcript.length)
+            if (transcript.substring(lastIndex) != "") {
+                const timestamp = Date.now() - startTime;
+                    data.current = {
+                        ...data.current,
+                        [timestamp]: transcript.substring(lastIndex),
+                    }     
+                    console.log(data.current)
+                }
+        }
+    }, [listening, transcript, lastIndex, startTime])
+
     return (
         <div>
             {status === "stopped" && <Button fullWidth color="danger" onClick={() => {
@@ -81,6 +101,8 @@ function Dictaphone({status, clearBlobUrl, videoRef, audioRef}: DictaphoneProps)
                     videoRef.current?.load();
                     audioRef.current?.load();
                     resetTranscript();
+                    setLastIndex(0);
+                    data.current = {}
             }}>Reset</Button>}
             <div className="flex flex-col gap-2 pt-5">
                 <h2 className="text-center">Transcript</h2>
