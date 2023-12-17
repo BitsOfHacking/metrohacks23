@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react";
-import { RefObject, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { StatusMessages, useReactMediaRecorder } from "react-media-recorder";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
@@ -20,7 +20,6 @@ export default function RecordTab({ showVideo }: RecordTabProps) {
         startRecording();
         SpeechRecognition.startListening({ continuous: true })
         setStartTime(Date.now())
-        
     }
     function stopRecordingProcess() {
         stopRecording();
@@ -63,7 +62,7 @@ export default function RecordTab({ showVideo }: RecordTabProps) {
                     )
                     
                 }
-                <Dictaphone startTime={startTime} status={status} clearBlobUrl={clearBlobUrl} videoRef={videoRef} audioRef={audioRef}/>
+                <Dictaphone mediaBlobUrl={mediaBlobUrl} startTime={startTime} status={status} clearBlobUrl={clearBlobUrl} videoRef={videoRef} audioRef={audioRef}/>
             </div>
         </section>
     )
@@ -74,8 +73,9 @@ interface DictaphoneProps {
     videoRef: RefObject<HTMLVideoElement>
     audioRef: RefObject<HTMLAudioElement>
     startTime: number
+    mediaBlobUrl: string | null
 }
-function Dictaphone({status, clearBlobUrl, videoRef, audioRef, startTime}: DictaphoneProps) {
+function Dictaphone({status, clearBlobUrl, videoRef, audioRef, startTime, mediaBlobUrl}: DictaphoneProps) {
     const { transcript, resetTranscript, listening } = useSpeechRecognition();
     const data = useRef({});
     const [lastIndex, setLastIndex] = useState(0);
@@ -95,6 +95,25 @@ function Dictaphone({status, clearBlobUrl, videoRef, audioRef, startTime}: Dicta
     }, [listening, transcript, lastIndex, startTime])
     
     async function analyzeTranscript() {
+        const mediaBlob = await fetch(mediaBlobUrl).then((r) => r.blob());
+        console.log(mediaBlob);
+        const mediaFile = new File([mediaBlob], 'media.wav', { type: 'audio/wav' });
+        const formData = new FormData();
+        formData.append("file", mediaFile)
+        console.log(formData.values(), formData.keys())
+        const res = await fetch("http://localhost:5000/api/uploadfile", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        const resData = await res.json();
+        console.log(resData)
+        // await uploadTranscript()
+        
+    }
+    async function uploadTranscript() {
         const res = await fetch("http://localhost:5000/api/uploadtranscript", {
             method: "POST",
             body: JSON.stringify(data.current),
