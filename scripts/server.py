@@ -29,7 +29,7 @@ def upload_file():
 
 @app.route("/api/ask", methods=["POST"])
 def ask():
-    prompt = "Ask a question related to this: "
+    prompt = "Ask a short question related to this: "
     transcript = request.json
     section = transcript["section"]
 

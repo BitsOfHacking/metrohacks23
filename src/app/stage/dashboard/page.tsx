@@ -1,9 +1,15 @@
 'use client'
 
+import DataContext from "@/components/DataContext";
 import {Card, CardBody, CardHeader} from "@nextui-org/card";
 import BubbleChart from '@weknow/react-bubble-chart-d3';
+import { useContext } from "react";
 
 export default function DashboardPage() {
+    const {
+        tData
+    } = useContext(DataContext);
+    console.log(tData);
     return (
 
         <>
@@ -24,7 +30,7 @@ export default function DashboardPage() {
                                     Words Per Minute
                                 </div>
                                 <div className={"text-4xl font-extrabold"}>
-                                    N/A
+                                    36
                                 </div>
                             </div>
                         </CardHeader>
@@ -37,7 +43,7 @@ export default function DashboardPage() {
                                     Non-Filler Word Percentage
                                 </div>
                                 <div className={"text-4xl font-extrabold"}>
-                                    N/A
+                                    87%
                                 </div>
                             </div>
                         </CardHeader>
@@ -51,7 +57,7 @@ export default function DashboardPage() {
                                     Unique Words
                                 </div>
                                 <div className={"text-4xl font-extrabold"}>
-                                    N/A
+                                    58
                                 </div>
                             </div>
                         </CardHeader>

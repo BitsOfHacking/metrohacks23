@@ -7,7 +7,9 @@ import Dictaphone from "@/components/Dictaphone";
 interface RecordTabProps {
     showVideo: boolean
 }
-export default function Recorder({ showVideo }: RecordTabProps) {
+export default function Recorder({ showVideo, setQuestions }: RecordTabProps) {
+
+
     const { status, startRecording, stopRecording, mediaBlobUrl, previewStream, clearBlobUrl } =
         useReactMediaRecorder({
             video: showVideo,
@@ -35,7 +37,7 @@ export default function Recorder({ showVideo }: RecordTabProps) {
             <Button className={"w-48 text-xl h-12 mt-8"} color="danger" variant="shadow" onClick={() => status === "recording" ? stopRecordingProcess() : startRecordingProcess()}>
                 {status === "recording" ? "End Meeting" : "Start Meeting"}
             </Button>
-            <Dictaphone mediaBlobUrl={mediaBlobUrl} startTime={startTime} status={status} clearBlobUrl={clearBlobUrl} videoRef={videoRef} audioRef={audioRef}/>
+            <Dictaphone setQuestions={setQuestions} mediaBlobUrl={mediaBlobUrl} startTime={startTime} status={status} clearBlobUrl={clearBlobUrl} videoRef={videoRef} audioRef={audioRef}/>
 
         </>
     )
