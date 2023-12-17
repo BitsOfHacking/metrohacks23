@@ -33,11 +33,11 @@ export default function Dictaphone({status, clearBlobUrl, videoRef, audioRef, st
 
     useEffect(() => {
         const periodicQuestions = setInterval(async () =>  {
-            if (status === "recording") {
+            if (data.current !== {}) {
                 console.log("Fetching...");
                 const res = await fetch("http://localhost:5000/api/ask", {
                     method: "POST",
-                    body: JSON.stringify({section: transcript}),
+                    body: JSON.stringify({section: data.current.values.join(" ")}),
                     headers: {
                         "Content-Type": "application/json"
                     }
