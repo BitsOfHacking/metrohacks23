@@ -31,6 +31,27 @@ export default function Dictaphone({status, clearBlobUrl, videoRef, audioRef, st
         }
     }, [listening, transcript, lastIndex, startTime])
 
+    useEffect(() => {
+        const periodicQuestions = setInterval(async () =>  {
+            if (listening) {
+                console.log("Fetching...");
+                const res = await fetch("http://localhost:5000/api/ask", {
+                    method: "POST",
+                    body: JSON.stringify({section: transcript}),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                const resData = await res.json();
+                console.log(resData)
+            } else {
+                console.log("Not listening");
+            }
+        }, 30000);
+
+        return () => clearInterval(periodicQuestions);
+    }, []);
+
     async function analyzeTranscript() {
         const mediaBlob = await fetch(mediaBlobUrl).then((r) => r.blob());
         console.log(mediaBlob);

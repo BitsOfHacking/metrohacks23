@@ -26,11 +26,13 @@ export default function Recorder({ showVideo }: RecordTabProps) {
         stopRecording();
         SpeechRecognition.stopListening()
     }
+
+
     
     return (
 
         <>
-            <Button className={"w-48 text-xl h-12 mt-8"} color="danger" variant="shadow" onClick={startRecordingProcess}>
+            <Button className={"w-48 text-xl h-12 mt-8"} color="danger" variant="shadow" onClick={() => status === "recording" ? stopRecordingProcess() : startRecordingProcess()}>
                 {status === "recording" ? "End Meeting" : "Start Meeting"}
             </Button>
             <Dictaphone mediaBlobUrl={mediaBlobUrl} startTime={startTime} status={status} clearBlobUrl={clearBlobUrl} videoRef={videoRef} audioRef={audioRef}/>
