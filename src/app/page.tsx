@@ -4,17 +4,16 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 gap-4 dark text-foreground bg-background">
-      <h1 className="text-[96px]">Sharpen your <span className="bg-gradient-to-r from-fuchsia-600 to-pink-600">public speaking</span> skills</h1>
+    <main className="flex min-h-screen flex-col items-center p-24 gap-4 text-foreground bg-background">
+      <h1 className="text-[96px]">Sharpen your <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+public speaking
+  </span> skills</h1>
       <h2 className="text-gray-400">Analyze your speech or presentation with this amazing tool.</h2>
       <Link href="/stage">
           <Button color="danger" variant="shadow" startContent={<SoundIcon/>}>
             Get Started
           </Button>
         </Link>
-      {/* <Button isIconOnly size="lg" color="danger" aria-label="Record">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" width="16" viewBox="0 0 384 512"><path d="M192 0C139 0 96 43 96 96V256c0 53 43 96 96 96s96-43 96-96V96c0-53-43-96-96-96zM64 216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 89.1 66.2 162.7 152 174.4V464H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h72 72c13.3 0 24-10.7 24-24s-10.7-24-24-24H216V430.4c85.8-11.7 152-85.3 152-174.4V216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 70.7-57.3 128-128 128s-128-57.3-128-128V216z"/></svg>
-      </Button> */}
     </main>
   )
 }
