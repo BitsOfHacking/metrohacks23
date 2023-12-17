@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react";
-import { Dispatch, RefObject, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
+import { RefObject, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import { StatusMessages, useReactMediaRecorder } from "react-media-recorder";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
@@ -93,10 +93,21 @@ function Dictaphone({status, clearBlobUrl, videoRef, audioRef, startTime}: Dicta
                 }
         }
     }, [listening, transcript, lastIndex, startTime])
-
+    
+    async function analyzeTranscript() {
+        const res = await fetch("http://localhost:5000/api/uploadtranscript", {
+            method: "POST",
+            body: JSON.stringify(data.current),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+        const resData = await res.json();
+        console.log(resData)
+    }
     return (
         <div>
-            {status === "stopped" && <Button fullWidth color="danger" onClick={() => {
+            {status === "stopped" && <Button fullWidth color="danger" variant="ghost" onClick={() => {
                     clearBlobUrl();
                     videoRef.current?.load();
                     audioRef.current?.load();
@@ -105,9 +116,11 @@ function Dictaphone({status, clearBlobUrl, videoRef, audioRef, startTime}: Dicta
                     data.current = {}
             }}>Reset</Button>}
             <div className="flex flex-col gap-2 pt-5">
-                <h2 className="text-center">Transcript</h2>
+            <h3 className="text-[24px] text-center">Transcript</h3>
+                {transcript !== "" && <Button variant="shadow" color="primary" onClick={analyzeTranscript}>Analyze</Button>}
                 <p className="min-h-[100px]">{transcript}</p>
             </div>
+            
         </div>
     );
 };

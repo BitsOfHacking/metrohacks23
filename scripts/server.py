@@ -1,9 +1,12 @@
 from flask import Flask, request
+from flask_cors import CORS
+
 
 from audio_analyzer import AudioAnalyzer
 from transcript_analyzer import TranscriptAnalyzer
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/api/uploadtranscript", methods=["POST"])
@@ -11,7 +14,6 @@ def upload_transcript():
     transcript = request.json
 
     transcript_analyzer = TranscriptAnalyzer(transcript)
-
     return transcript_analyzer.retrieve_frequency_map()
 
 
