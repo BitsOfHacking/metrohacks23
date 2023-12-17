@@ -1,35 +1,47 @@
-from os import path
-import json
-import string
-import numpy as np
+import io
+import subprocess
 
-JSON_FILE_PATH = "sample_data.json"
+import ffmpeg
+
+SILENCE_THRESHOLD = 50
+SILENCE_DURATION = 0.5
 
 
-def strip_string(raw_string: str) -> str:
-    # Remove punctuation
-    raw_string = raw_string.translate(str.maketrans(dict.fromkeys(string.punctuation)))
+def parse_data(s):
+    split = s.split(" ")
 
-    # Remove case sensitivity
-    raw_string = raw_string.lower()
-
-    return raw_string
-
+    return split[4] + " | " + split[7]
 
 class AudioAnalyzer:
-    def __init__(self, transcript):
-        self.transcript = transcript
+    def __init__(self, file):
+        self.file = file
 
-    def retrieve_frequency_map(self):
-        frequency_map = {}
+    def find_pauses(self):
+        command = "ffmpeg -hide_banner -vn -i - -af \"silencedetect=n={}dB:d={}\" -f null -".format(SILENCE_THRESHOLD,
+                                                                                                    SILENCE_DURATION)
 
-        for key, value in self.transcript.items():
-            stripped = strip_string(value)
+        # command = ['ffmpeg', '-y', '-i', '-', '-f', 'wav', '-']
 
-            for word in stripped.split(" "):
-                if word in frequency_map:
-                    frequency_map[word] += 1
-                else:
-                    frequency_map[word] = 1
+        memfile = io.BytesIO()
+        memfile.write(self.file.read())
+        memfile.seek(0)
 
-        return frequency_map
+        process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # subprocess pipe data gets routed to only stderr despite finishing perfectly
+        # WHY does ffmpeg not document this?
+        r, result = process.communicate(memfile.read())
+
+        result = result.decode()
+
+        print(result)
+
+        # Parse result
+
+        result = list(filter(lambda s: "silence_end" in s, result.replace("\r", "").split("\n")))
+
+        result = list(map(lambda s: parse_data(s), result))
+
+        print(result)
+
+        return result
