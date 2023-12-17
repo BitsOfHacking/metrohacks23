@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import g4f
 
-
 from audio_analyzer import AudioAnalyzer
 from transcript_analyzer import TranscriptAnalyzer
 
@@ -27,14 +26,15 @@ def upload_file():
 
     return audio_analyzer.find_pauses()
 
+
 @app.route("/api/ask", methods=["POST"])
 def ask():
     prompt = "Ask a question related to this: "
     transcript = request.json
     section = transcript["section"]
 
-    g4f.logging = True # enable logging
-    g4f.check_version = False # Disable automatic version checking
+    g4f.logging = True  # enable logging
+    g4f.check_version = False  # Disable automatic version checking
 
     # normal response
     res = g4f.ChatCompletion.create(
@@ -44,9 +44,6 @@ def ask():
     return jsonify({
         "question": res
     })
-
-
-
 
 
 if __name__ == '__main__':

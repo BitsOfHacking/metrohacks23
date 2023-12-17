@@ -5,12 +5,12 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-24 gap-4 text-foreground bg-background">
-      <h1 className="text-[96px]">Sharpen your <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+      <h1 className="text-[96px]">Master your <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
 public speaking
-  </span> skills</h1>
-      <h2 className="text-gray-400">Analyze your speech or presentation with this amazing tool.</h2>
+  </span><div>through technology.</div></h1>
+      <h2 className="text-gray-400 text-xl mb-8"></h2>
       <Link href="/stage">
-          <Button color="danger" variant="shadow" startContent={<SoundIcon/>}>
+          <Button className={"w-48 text-xl h-12"} color="danger" variant="shadow" startContent={<SoundIcon/>}>
             Get Started
           </Button>
         </Link>
