@@ -1,4 +1,5 @@
-import { Navbar, NavbarContent, NavbarItem, Link } from "@nextui-org/react"
+import { Navbar, NavbarContent, NavbarItem, Link, NavbarBrand } from "@nextui-org/react"
+import StageSyncLogo from "@/components/StageSyncLogo";
 
 export default function StageLayout({
     children,
@@ -8,16 +9,12 @@ export default function StageLayout({
     return (
         <>
             <Navbar>
+                <NavbarBrand>
+                    <StageSyncLogo/>
+                </NavbarBrand>
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
                     <NavbarItem>
-                    <Link color="foreground" href="/">
-                        Home
-                    </Link>
-                    </NavbarItem>
-                    <NavbarItem isActive>
-                    <Link color="danger" href="/stage" aria-current="page">
-                        Stage
-                    </Link>
+
                     </NavbarItem>
                 </NavbarContent>
             </Navbar>
